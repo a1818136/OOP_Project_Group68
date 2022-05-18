@@ -18,12 +18,54 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="crops.h">
+    <ClCompile Include="Crops.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Potato.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Carrot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Pumpkin.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Words.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="store.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="originclass.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Season.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Crops.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Potato.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Carrot.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Pumpkin.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tool.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Words.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="store.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

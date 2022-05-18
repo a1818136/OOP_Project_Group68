@@ -9,7 +9,6 @@
 #include <SFML/System.hpp>
 #include <vector>
 #include <fstream>
-#include "crops.h"
 using namespace std;
 using namespace sf;
 

@@ -7,8 +7,13 @@
 #include <time.h>
 #include <process.h>
 #include <stdio.h>
-#include "originclass.h"
-#include "crops.h"
+#include "Potato.h"
+#include "Carrot.h"
+#include "Pumpkin.h"
+#include "Season.h"
+#include "tool.h"
+#include "store.h"
+#include "Words.h"
 using namespace sf;
 using namespace std;
 
@@ -45,7 +50,7 @@ int main(){
     int game_count_time = 0;
 
     //initialise the inventory and money
-    int money = 50;
+    int* money = new int(50);
     int inventory_potato = 0;
     int inventory_carrot = 0;
     int inventory_pumpkin = 0;
@@ -84,7 +89,7 @@ int main(){
 
         if (Keyboard::isKeyPressed(Keyboard::L) && load){
             cout << "main load" << endl;
-            tools.functionLoad(&money, &inventory_potato, &inventory_carrot, &inventory_pumpkin, &inventory_fertilizer);
+            tools.functionLoad(money, &inventory_potato, &inventory_carrot, &inventory_pumpkin, &inventory_fertilizer);
             load = false;
         }
 
@@ -99,7 +104,7 @@ int main(){
         sstime << game_time;
         sstime >> str_time;
         timeText.text.setString(str_time);
-        ssmoney << money;
+        ssmoney << *money;
         ssmoney >> str_money;
         moneyvalueText.text.setString(str_money);
 
@@ -168,19 +173,19 @@ int main(){
         //store
         if (Keyboard::isKeyPressed(Keyboard::B)) {
             if (key == 1 && CD_count_time >= 20) {
-                store.buy(&inventory_potato, &money);
+                store.buy(&inventory_potato, money);
                 CD_count_time = 0;
             }
             else if (key == 2 && CD_count_time >= 20) {
-                store.buy(&inventory_carrot, &money);
+                store.buy(&inventory_carrot, money);
                 CD_count_time = 0;
             }
             else if (key == 3 && CD_count_time >= 20) {
-                store.buy(&inventory_pumpkin, &money);
+                store.buy(&inventory_pumpkin, money);
                 CD_count_time = 0;
             }
             else if (key == 14 && CD_count_time >= 20) {
-                store.buy(&inventory_fertilizer, &money);
+                store.buy(&inventory_fertilizer, money);
                 CD_count_time = 0;
             }
         }
@@ -192,7 +197,7 @@ int main(){
                 if (tools.potatoes[i].intsec(Mouse::getPosition(window))) {
                     //tool functions
                     type = 1;
-                    tools.funnctions(type, key, i, &money, &inventory_fertilizer);
+                    tools.funnctions(type, key, i, money, &inventory_fertilizer);
                     flag_not_overlap = false;
                     break;
                 }
@@ -200,7 +205,7 @@ int main(){
             for (size_t j = 0; j < tools.carrots.size(); j++) {
                 if (tools.carrots[j].intsec(Mouse::getPosition(window))) {
                     type = 2;
-                    tools.funnctions(type, key, j, &money, &inventory_fertilizer);
+                    tools.funnctions(type, key, j, money, &inventory_fertilizer);
                     flag_not_overlap = false;
                     break;
                 }
@@ -208,7 +213,7 @@ int main(){
             for (size_t k = 0; k < tools.pumpkins.size(); k++) {
                 if (tools.pumpkins[k].intsec(Mouse::getPosition(window))) {
                     type = 3;
-                    tools.funnctions(type, key, k, &money, &inventory_fertilizer);
+                    tools.funnctions(type, key, k, money, &inventory_fertilizer);
                     flag_not_overlap = false;
                     break;
                 }
@@ -222,7 +227,7 @@ int main(){
 
         
         if (Keyboard::isKeyPressed(Keyboard::S)) {
-            tools.functionSave(money,inventory_potato,inventory_carrot,inventory_pumpkin,inventory_fertilizer);
+            tools.functionSave(*money,inventory_potato,inventory_carrot,inventory_pumpkin,inventory_fertilizer);
         }
         //clear the window
         window.clear();
@@ -259,5 +264,6 @@ int main(){
         window.display();
     }
 
+    delete money;
     return 0;
 }

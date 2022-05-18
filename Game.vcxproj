@@ -19,11 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Carrot.cpp" />
+    <ClCompile Include="Crops.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="crops.h" />
+    <ClCompile Include="Potato.cpp" />
+    <ClCompile Include="Pumpkin.cpp" />
+    <ClCompile Include="store.cpp" />
+    <ClCompile Include="tool.cpp" />
+    <ClCompile Include="Words.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Carrot.h" />
+    <ClInclude Include="Crops.h" />
     <ClInclude Include="originclass.h" />
+    <ClInclude Include="Potato.h" />
+    <ClInclude Include="Pumpkin.h" />
+    <ClInclude Include="Season.h" />
+    <ClInclude Include="store.h" />
+    <ClInclude Include="tool.h" />
+    <ClInclude Include="Words.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
