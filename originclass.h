@@ -1,15 +1,14 @@
 #pragma once
 #include <iostream>
 #include <time.h>
-#include <process.h>
 #include <stdio.h>
 #include <string>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <vector>
+#include "SFML/Audio.hpp"
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "vector"
+#include <variant>
 #include <fstream>
-#include "crops.h"
 using namespace std;
 using namespace sf;
 
@@ -24,6 +23,7 @@ class Crops{
 public:
 	sf::Sprite sprite;
 	sf::Texture texture;
+	int type;
 	int cost;
 	int purchasePrice;
 	int timeGenerate;
@@ -32,6 +32,7 @@ public:
 	int growrate = 0;
 	bool watered = false;
 	bool grow = false;
+	bool harvestable = false;
 	Season currentSeason;
 	virtual void growth() = 0;
 	//updates the time and season
@@ -69,6 +70,7 @@ public:
 		sprite.setPosition(pos);
 		cost = 5;
 		purchasePrice = 10;
+		type = 1;
 	}
 
 	void growth() {
@@ -97,7 +99,7 @@ public:
 		case 2: texture.loadFromFile("potato/potato3.png"); sprite.setTexture(texture); break;
 		case 3: texture.loadFromFile("potato/potato4.png"); sprite.setTexture(texture); break;
 		case 4: texture.loadFromFile("potato/potato5.png"); sprite.setTexture(texture); break;
-		case 5: texture.loadFromFile("potato/potato6.png"); sprite.setTexture(texture); break;
+		case 5: texture.loadFromFile("potato/potato6.png"); sprite.setTexture(texture); harvestable = true; break;
 		}
 	}
 
@@ -113,6 +115,7 @@ public:
 		sprite.setPosition(pos);
 		cost = 5;
 		purchasePrice = 10;
+		type = 2;
 	}
 
 	void growth() {
@@ -140,7 +143,7 @@ public:
 		case 1: texture.loadFromFile("carrot/carrot2.png"); sprite.setTexture(texture); break;
 		case 2: texture.loadFromFile("carrot/carrot3.png"); sprite.setTexture(texture); break;
 		case 3: texture.loadFromFile("carrot/carrot4.png"); sprite.setTexture(texture); break;
-		case 4: texture.loadFromFile("carrot/carrot5.png"); sprite.setTexture(texture); break;
+		case 4: texture.loadFromFile("carrot/carrot5.png"); sprite.setTexture(texture); harvestable = true; break;
 		}
 	}
 
@@ -156,6 +159,7 @@ public:
 		sprite.setPosition(pos);
 		cost = 5;
 		purchasePrice = 10;
+		type = 3;
 	}
 
 	void growth() {
@@ -184,7 +188,7 @@ public:
 		case 2: texture.loadFromFile("pumpkin/pumpkin3.png"); sprite.setTexture(texture); break;
 		case 3: texture.loadFromFile("pumpkin/pumpkin4.png"); sprite.setTexture(texture); break;
 		case 4: texture.loadFromFile("pumpkin/pumpkin5.png"); sprite.setTexture(texture); break;
-		case 5: texture.loadFromFile("pumpkin/pumpkin6.png"); sprite.setTexture(texture); break;
+		case 5: texture.loadFromFile("pumpkin/pumpkin6.png"); sprite.setTexture(texture); harvestable = true; break;
 		}
 	}
 
@@ -192,9 +196,7 @@ public:
 
 class tool {
 public:
-	vector<Potato> potatoes;
-	vector<Carrot> carrots;
-	vector<Pumpkin> pumpkins;
+	std::vector<std::variant<Potato, Carrot, Pumpkin>> crops;
 	int costFert = 5;
 	int key;
 	Texture texture;
@@ -227,65 +229,29 @@ public:
 		}	
 	}
 
-	void funnctions(int type, int key, int count,int *money,int *inventory_fertilizer) {
+	void funnctions(int key, int count,int *money,int *inventory_fertilizer) {
 		switch (key){
 		//Spray bottle
 		case 11:
-			if (type==1){
-				potatoes[count].watered = true;
-				break;
-			}
-			else if(type==2) {
-				carrots[count].watered = true;
-				break;
-			}
-			else if (type == 3) {
-				pumpkins[count].watered = true;
-				break;
-			}
+			crops[count]._Storage()._Get().watered = true;
+			break;
 		//Hoe
 		case 12:
-			if (type == 1) {
-				potatoes.erase(potatoes.begin() + count);
-				break;
-			}
-			else if (type == 2) {
-				carrots.erase(carrots.begin() + count);
-				break;
-			}
-			else if (type == 3) {
-				pumpkins.erase(pumpkins.begin() + count);
-				break;
-			}
+			crops.erase(crops.begin() + count);
+			break;
 			
 		//Sickle
 		case 13:
-			if (type == 1 && potatoes[count].growrate >= 50) {
-				potatoes.erase(potatoes.begin() + count);
+			if (crops[count]._Storage()._Get().harvestable == true){
+				crops.erase(crops.begin() + count);
 				*money = *money + 10;
-			}
-			else if (type == 2 && carrots[count].growrate >= 40) {
-				carrots.erase(carrots.begin() + count);
-				*money = *money + 15;
-			}
-			else if (type == 3 && pumpkins[count].growrate >=50) {
-				pumpkins.erase(pumpkins.begin() + count);
-				*money = *money + 20;
 				break;
 			}
+			
 		//Fertiliser
 		case 14:
-			if (type == 1 && *inventory_fertilizer > 0) {
-				potatoes[count].growrate = potatoes[count].growrate + 10;
-				*inventory_fertilizer = *inventory_fertilizer - 1;
-			}
-			else if (type == 2 && *inventory_fertilizer > 0) {
-				carrots[count].growrate = carrots[count].growrate + 8;
-				*inventory_fertilizer = *inventory_fertilizer - 1;
-			}
-			else if (type == 3 && *inventory_fertilizer > 0) {
-				pumpkins[count].growrate = pumpkins[count].growrate + 10;
-				*inventory_fertilizer = *inventory_fertilizer - 1;
+			if (crops[count]._Storage()._Get().harvestable == false && *inventory_fertilizer > 0) {
+				crops[count]._Storage()._Get().growrate = crops[count]._Storage()._Get().growrate + 10;
 				break;
 			}
 		}
@@ -295,15 +261,15 @@ public:
 	//Genarate crop
 	void functionRake(int key, int currTime,sf::Vector2f pos, int* inventory_potato, int *inventory_carrot, int *inventory_pumpkin) {
 		if (key==1 && *inventory_potato > 0){
-			potatoes.push_back(Potato(currTime, pos));
+			crops.push_back(Potato(currTime, pos));
 			*inventory_potato = *inventory_potato - 1;
 		}
 		else if (key==2 && *inventory_carrot > 0){
-			carrots.push_back(Carrot(currTime, pos));
+			crops.push_back(Carrot(currTime, pos));
 			*inventory_carrot = *inventory_carrot - 1;
 		}
 		else if (key == 3 && *inventory_pumpkin > 0) {
-			pumpkins.push_back(Pumpkin(currTime, pos));
+			crops.push_back(Pumpkin(currTime, pos));
 			*inventory_pumpkin = *inventory_pumpkin - 1;
 		}
 	}
@@ -316,33 +282,19 @@ public:
 		file << inventory_carrot << endl;
 		file << inventory_pumpkin << endl;
 		file << inventory_fertiliser << endl;
-		int sizePotato = potatoes.size();
-		int sizeCarrot = carrots.size();
-		int sizePumpkin = pumpkins.size();
-		file << sizePotato << endl;
-		file << sizeCarrot << endl;
-		file << sizePumpkin << endl;
-		for (size_t i = 0; i < potatoes.size(); i++) {
-			file << potatoes[i].sprite.getPosition().x << endl;
-			file << potatoes[i].sprite.getPosition().y << endl;
-			file << potatoes[i].timeGenerate << endl;
-			file << potatoes[i].growrate << endl;
-		}
-		for (size_t j = 0; j < carrots.size(); j++) {
-			file << carrots[j].sprite.getPosition().x << endl;
-			file << carrots[j].sprite.getPosition().y << endl;
-			file << carrots[j].timeGenerate << endl;
-			file << carrots[j].growrate << endl;
-		}
-		for (size_t k = 0; k < pumpkins.size(); k++) {
-			file << pumpkins[k].sprite.getPosition().x << endl;
-			file << pumpkins[k].sprite.getPosition().y << endl;
-			file << pumpkins[k].timeGenerate << endl;
-			file << pumpkins[k].growrate << endl;
+		int sizeCrops = crops.size();
+		file << sizeCrops << endl;
+		for (size_t i = 0; i < crops.size(); i++) {
+			file << crops[i]._Storage()._Get().type << endl;
+			file << crops[i]._Storage()._Get().sprite.getPosition().x << endl;
+			file << crops[i]._Storage()._Get().sprite.getPosition().y << endl;
+			file << crops[i]._Storage()._Get().timeGenerate << endl;
+			file << crops[i]._Storage()._Get().growrate << endl;
+			file << crops[i]._Storage()._Get().watered << endl;
 		}
 	}
 	void functionLoad(int *money, int *inventory_potato, int *inventory_carrot, int *inventory_pumpkin, int *inventory_fertiliser) {
-		cout << ".h load" << endl;
+		cout << "Load" << endl;
 		ifstream infile;
 		infile.open("file.dat");
 		int _money=0;
@@ -360,42 +312,40 @@ public:
 		*inventory_carrot = carrot;
 		*inventory_pumpkin = pumpkin;
 		*inventory_fertiliser = fertiliser;
-		int sizePotato;
-		int sizeCarrot;
-		int sizePumpkin;
-		infile >> sizePotato;
-		infile >> sizeCarrot;
-		infile >> sizePumpkin;
+		int sizeCrops;
+		infile >> sizeCrops;
 		float x;
 		float y;
 		int timeGenerate;
 		int growthrate;
-		for (int i = 0; i < sizePotato; i++){
+		int type;
+		bool waterd;
+		for (int i = 0; i < sizeCrops; i++){
+			infile >> type;
 			infile >> x;
 			infile >> y;
 			infile >> timeGenerate;
 			infile >> growthrate;
+			infile >> waterd;
 			Vector2f pos = { x, y };
-			potatoes.push_back(Potato(timeGenerate, pos));
-			potatoes[i].growrate = growthrate;
-		}
-		for (int j = 0; j < sizeCarrot; j++) {
-			infile >> x;
-			infile >> y;
-			infile >> timeGenerate;
-			infile >> growthrate;
-			Vector2f pos = { x, y };
-			carrots.push_back(Carrot(timeGenerate, pos));
-			carrots[j].growrate = growthrate;
-		}
-		for (int k = 0; k < sizePumpkin; k++) {
-			infile >> x;
-			infile >> y;
-			infile >> timeGenerate;
-			infile >> growthrate;
-			Vector2f pos = { x, y };
-			pumpkins.push_back(Pumpkin(timeGenerate, pos));
-			pumpkins[k].growrate = growthrate;
+			switch (type){
+			case 1:
+				crops.push_back(Potato(timeGenerate, pos));
+				crops[i]._Storage()._Get().growrate = growthrate;
+				crops[i]._Storage()._Get().watered = waterd;
+				break;
+			case 2:
+				crops.push_back(Carrot(timeGenerate, pos));
+				crops[i]._Storage()._Get().growrate = growthrate;
+				crops[i]._Storage()._Get().watered = waterd;
+				break;
+			case 3:
+				crops.push_back(Pumpkin(timeGenerate, pos));
+				crops[i]._Storage()._Get().growrate = growthrate;
+				crops[i]._Storage()._Get().watered = waterd;
+				break;
+			}
+			
 		}
 	}
 };
