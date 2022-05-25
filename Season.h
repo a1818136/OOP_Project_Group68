@@ -13,6 +13,7 @@
 using namespace std;
 using namespace sf;
 
+//contain seasons
 enum class Season {
 	Spring,
 	Summer,

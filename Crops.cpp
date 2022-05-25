@@ -15,6 +15,7 @@ using namespace sf;
 
 //updates the time and season
 void Crops::states(Season _currentSeason) {
+	//set time
 	time_t timep;
 	int currentTime = time(&timep);
 	lastSec = timeLived;
@@ -28,6 +29,7 @@ void Crops::states(Season _currentSeason) {
 
 //check for overlap
 bool Crops::intsec(Vector2i pos) {
+	//if overlap
 	if (((sprite.getPosition().x < pos.x)
 		&& ((sprite.getPosition().x + 48) > pos.x))
 		&& ((sprite.getPosition().y < pos.y)

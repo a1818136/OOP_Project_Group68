@@ -16,7 +16,7 @@ using namespace sf;
 //a basic class for crops
 class Crops {
 public:
-	//display the testure
+	//display the texture
 	sf::Sprite sprite;
 	sf::Texture texture;
 
@@ -33,10 +33,10 @@ public:
 	bool harvestable = false;
 	Season currentSeason;
 
-	//pure vritual grow situations for different kindscrops
+	//pure vritual grow situations for different crops
 	virtual void growth() = 0;
 
-	//updates the time and season
+	//update the time and season
 	void states(Season _currentSeason);
 
 	//check for overlap

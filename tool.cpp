@@ -46,6 +46,7 @@ void tool::states(int key) {
 	}
 }
 
+//different functions corresponding to specific tools
 void tool::funnctions(int key, int count, int* money, int* inventory_fertilizer) {
 	switch (key) {
 		//function for spray bottle,to change the water condition
@@ -135,7 +136,7 @@ void tool::functionLoad(int* money, int* inventory_potato, int* inventory_carrot
 	int pumpkin = 0;
 	int fertiliser = 0;
 
-	//stream form the saving file to the values to load
+	//stream from the saving file to the values to load
 	infile >> _money;
 	infile >> potato;
 	infile >> carrot;
@@ -157,7 +158,7 @@ void tool::functionLoad(int* money, int* inventory_potato, int* inventory_carrot
 	int type;
 	bool waterd;
 
-	//loop to load for different kinds of crops
+	//loop to load different kinds of crops
 	for (int i = 0; i < sizeCrops; i++) {
 		//stream to target values
 		infile >> type;

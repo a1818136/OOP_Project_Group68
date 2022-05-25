@@ -33,6 +33,7 @@ public:
 	Texture texture;
 	Sprite toolsprite;
 
+	//constuctor
 	tool();
 
 	//change the texture for a specific tool

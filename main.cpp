@@ -14,6 +14,7 @@
 #include "tool.h"
 #include "store.h"
 #include "Words.h"
+//for test, use "origincalss.h"
 //#include "originclass.h"
 using namespace sf;
 using namespace std;
@@ -35,15 +36,15 @@ int main(){
     cout << "\\-----------------------------------------------------------------------------------------------/" << endl;
     //initialise the window
     RenderWindow window(sf::VideoMode(1024, 800), "Farm");
-    window.setFramerateLimit(60);           //limits fram
+    window.setFramerateLimit(60);        //limits fram
 
     //instantiating objects
     tool tools;
     store store;
     
-    bool flag_not_overlap = true;           //to check if the mouse position is overlap with any crop
-    int key = 1;                           //number that indecats the current tool/crop
-    int type;                               //overlap check 
+    bool flag_not_overlap = true;       //to check if the mouse position is overlap with any crop
+    int key = 1;                        //number that indecats the current tool/crop
+    int type;                           //overlap check 
 
     //initialise the season module
     Season currentSeason = Season::Spring;  
@@ -79,9 +80,9 @@ int main(){
     Words toolText(font, 22, 725, 5, "Item ");
     Words curToolText(font, 22, 800, 5, "potato");
 
-    //loop function
+    //main loop
     while (window.isOpen()) {
-        //counting fram for season change and click detection
+        //counting frames for season change and click detection
         CD_count_time++;
         season_frame_count++;
         //refuresh the overlap detection
@@ -173,8 +174,6 @@ int main(){
             key = 14;
             curToolText.text.setString("fertiliser");
         }
-
-        
 
         //change the texture for different tool
         tools.states(key);
